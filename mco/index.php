@@ -1,0 +1,1144 @@
+<?php
+
+require_once ("../MCO/php/component.php");
+require_once ("../MCO/php/operation.php");
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MUHAMMAD CARE ORGANISATION - Serving Humanity</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-color: #141c18;
+            --secondary-color: #004445;
+            --accent-color: #f8b400;
+            --light-color: #faf5e4;
+            --dark-color: #1a1a1a;
+            --success-color: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 68, 69, 0.8), rgba(0, 68, 69, 0.8)), 
+                        url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e0a800;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Donation Section */
+        .donation-section {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .donation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 120, 108, 0.2);
+        }
+
+        .donation-amounts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .amount-option {
+            flex: 1 0 calc(33.333% - 10px);
+            min-width: 100px;
+        }
+
+        .amount-option input[type="radio"] {
+            display: none;
+        }
+
+        .amount-option label {
+            display: block;
+            padding: 0.8rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .amount-option input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .amount-option label:hover {
+            border-color: var(--primary-color);
+        }
+
+        .custom-amount {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-amount span {
+            margin-right: 10px;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        /* Programs Section */
+        .programs-section {
+            padding: 4rem 0;
+            background-color: var(--light-color);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .program-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .program-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .program-card:hover .program-img img {
+            transform: scale(1.1);
+        }
+
+        .program-content {
+            padding: 1.5rem;
+        }
+
+        .program-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .program-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .program-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* Events Section */
+        .events-section {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .events-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .event-item {
+            display: flex;
+            margin-bottom: 2rem;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .event-date {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            min-width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .event-date .day {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .event-date .month {
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .event-details {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        .event-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .event-details .event-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .event-details .event-meta i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--secondary-color), var(--dark-color));
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-column p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Admin Portal Button */
+        .admin-portal-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .admin-portal-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        /* Admin Modal */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .admin-modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-modal-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .close-admin-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .admin-modal-body {
+            padding: 2rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        .admin-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .admin-form-group input,
+        .admin-form-group textarea,
+        .admin-form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .admin-form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .admin-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 2rem;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            nav ul {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                display: none;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .btn-secondary {
+                margin-left: 0;
+            }
+
+            .event-item {
+                flex-direction: column;
+            }
+
+            .event-date {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 15px;
+                padding: 1rem;
+            }
+
+            .event-date .day,
+            .event-date .month {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amount-option {
+                flex: 1 0 calc(50% - 10px);
+            }
+        }
+    </style>
+
+</head>
+<body>
+        <!-- Header -->
+        <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="logo.png" alt="Muhammad Care Organisation Logo">
+                <div class="logo-text">
+                    <h3>MUHAMMAD CARE ORGANISATION</h3>
+                    <h5><i>saving humanity</i></h5>
+                </div>
+            </div>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="index.php">Our Programs</a></li>
+                    <li><a href="#events">Events Callender</a></li>
+                    <li><a href="contact.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+                <div class="mobile-menu" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Lets transform Lives together </h2>
+            <p>Helping the needy is a fundamental aspect of a compassionate and thriving society.
+                 It's about recognizing the inherent dignity and worth of every individual and extending a helping hand 
+                 to those facing hardship.
+                 
+                 Join us in our mission to provide essential services, education, and healthcare to underprivileged communities 
+                across Uganda.</p>
+           
+            </p>
+            <a href="donation.html" class="btn btn-primary">Donate Now</a>
+            <a href="#programs" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+ <!-- Programs Section -->
+ <section class="programs-section" id="programs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Programs</h2>
+            </div>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Education Program">
+                    </div>
+                    <div class="program-content"> 
+                        <h3>Education for All</h3>
+                        <p>Providing quality education to underprivileged children in rural Uganda through school construction, teacher training, and scholarship programs.</p>
+                        <div class="program-meta">
+                            <span><i class="fas fa-users"></i> 500+ Students</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Kampala, Gulu</span>
+                           
+                        </div>
+                        <br />
+                        <a href="education.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Healthcare Program">
+                    </div>
+                    <div class="program-content">
+                        <h3>Healthcare Initiative</h3>
+                        <p>Mobile clinics and health education programs serving remote communities with limited access to medical care.</p>
+                        <div class="program-meta">
+                            <span><i class="fas fa-users"></i> 10,000+ Patients</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Nationwide</span>
+                        </div>
+                        <br />
+                        <a href="health.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Orphan Support Program">
+                    </div>
+                    <div class="program-content">
+                        <h3>Orphan Support</h3>
+                        <p>Comprehensive care for orphans including shelter, education, nutrition, and psychological support.</p>
+                        <div class="program-meta">
+                            <span><i class="fas fa-users"></i> 200+ Children</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Jinja, Mbale</span>
+                        </div>
+                        <br />
+                        <a href="ophansupport.html" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <div class="container">
+            <div class="section-title">
+                <h2>Upcoming Events</h2>
+            </div>
+            <div class="events-list">
+                <div class="event-item">
+                    <div class="event-date">
+                        <span class="day">15</span>
+                        <span class="month">Apr</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Medical Camp in Gulu</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> 8:00 AM - 5:00 PM</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Gulu Regional Hospital</span>
+                        </div>
+                        <p>Free medical checkups, consultations, and medication distribution for the community. Volunteers and medical professionals welcome.</p>
+                        <a href="#" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Register to Volunteer</a>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">
+                        <span class="day">22</span>
+                        <span class="month">May</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Annual Fundraising Gala</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> 6:00 PM - 11:00 PM</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Serena Hotel, Kampala</span>
+                        </div>
+                        <p>An evening of inspiration, entertainment, and philanthropy to support our education programs. Black tie event.</p>
+                        <a href="#" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Get Tickets</a>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">
+                        <span class="day">10</span>
+                        <span class="month">Jun</span>
+                    </div>
+                    <div class="event-details">
+                        <h3>Clean Water Project Launch</h3>
+                        <div class="event-meta">
+                            <span><i class="fas fa-clock"></i> 10:00 AM - 2:00 PM</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Nakaseke District</span>
+                        </div>
+                        <p>Official launch of our new borehole project bringing clean water to 5 villages. Community celebration with local leaders.</p>
+                        <a href="#" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <p>Muhammad Care Organisation is a registered non-profit in Uganda dedicated to serving humanity through education, healthcare, and community development programs since 2010.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#programs">Programs</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#donate">Donate</a></li>
+                        <li><a href="#">Volunteer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Plot 42, Mbale Road, Sironko, Uganda</p>
+                    <p><i class="fas fa-phone"></i> +256 740808893</p>
+                    <p><i class="fas fa-whatsapp"></i> +256 701852754</i></p>
+                    <p><i class="fas fa-envelope"></i> info@muhammadcare.org</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Muhammad Care Organisation. All Rights Reserved. | Registered NGO in Uganda</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Portal Button -->
+    <div class="admin-portal-btn" id="adminPortalBtn">
+        <i class="fas fa-lock"></i>
+    </div>
+
+    <!-- Admin Modal -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3>Admin Portal</h3>
+                <button class="close-admin-modal" id="closeAdminModal">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="programs">Programs</div>
+                    <div class="admin-tab" data-tab="events">Events</div>
+                    <div class="admin-tab" data-tab="donations">Donations</div>
+                </div>
+
+                <div class="admin-tab-content active" id="programsTab">
+                    <h4>Manage Programs</h4>
+                    <form id="programForm">
+                        <div class="admin-form-group">
+                            <label for="programName">Program Name</label>
+                            <input type="text" id="programName" name="programName" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="programDescription">Description</label>
+                            <textarea id="programDescription" name="programDescription" required></textarea>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="programLocation">Location(s)</label>
+                            <input type="text" id="programLocation" name="programLocation" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="programImage">Image URL</label>
+                            <input type="url" id="programImage" name="programImage" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="programImpact">Impact Statistics</label>
+                            <input type="text" id="programImpact" name="programImpact" placeholder="e.g., 500+ Students" required>
+                        </div>
+                        <div class="admin-form-actions">
+                            <button type="button" class="btn btn-cancel">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Program</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-tab-content" id="eventsTab">
+                    <h4>Manage Events</h4>
+                    <form id="eventForm">
+                        <div class="admin-form-group">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventName" name="eventName" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="eventDate">Date</label>
+                            <input type="date" id="eventDate" name="eventDate" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="eventTime">Time</label>
+                            <input type="text" id="eventTime" name="eventTime" placeholder="e.g., 8:00 AM - 5:00 PM" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="eventLocation">Location</label>
+                            <input type="text" id="eventLocation" name="eventLocation" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea id="eventDescription" name="eventDescription" required></textarea>
+                        </div>
+                        <div class="admin-form-actions">
+                            <button type="button" class="btn btn-cancel">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Event</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-tab-content" id="donationsTab">
+                    <h4>Donation Records</h4>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: var(--primary-color); color: white;">
+                                    <th style="padding: 0.8rem; text-align: left;">ID</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Donor</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Amount</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Program</th>
+                                    <th style="padding: 0.8rem; text-align: left;">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 0.8rem;">001</td>
+                                    <td style="padding: 0.8rem;">John Mugisha</td>
+                                    <td style="padding: 0.8rem;">UGX 200,000</td>
+                                    <td style="padding: 0.8rem;">Education for All</td>
+                                    <td style="padding: 0.8rem;">2025-03-15</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 0.8rem;">002</td>
+                                    <td style="padding: 0.8rem;">Sarah Nalwoga</td>
+                                    <td style="padding: 0.8rem;">UGX 500,000</td>
+                                    <td style="padding: 0.8rem;">Healthcare Initiative</td>
+                                    <td style="padding: 0.8rem;">2025-03-10</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 0.8rem;">003</td>
+                                    <td style="padding: 0.8rem;">Kampala Rotary Club</td>
+                                    <td style="padding: 0.8rem;">UGX 1,500,000</td>
+                                    <td style="padding: 0.8rem;">Clean Water Project</td>
+                                    <td style="padding: 0.8rem;">2025-02-28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="admin-form-actions" style="margin-top: 1.5rem;">
+                        <button type="button" class="btn btn-primary">Export Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="../crud/php/main.js"></script>
+
+<script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('show');
+        });
+
+        // Custom Amount Toggle
+        const amountRadios = document.querySelectorAll('input[name="amount"]');
+        const customAmountContainer = document.getElementById('customAmountContainer');
+        
+        amountRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    customAmountContainer.style.display = 'flex';
+                } else {
+                    customAmountContainer.style.display = 'none';
+                }
+            });
+        });
+
+        // Admin Portal Modal
+        const adminPortalBtn = document.getElementById('adminPortalBtn');
+        const adminModal = document.getElementById('adminModal');
+        const closeAdminModal = document.getElementById('closeAdminModal');
+        
+        adminPortalBtn.addEventListener('click', function() {
+            adminModal.style.display = 'block';
+        });
+        
+        closeAdminModal.addEventListener('click', function() {
+            adminModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === adminModal) {
+                adminModal.style.display = 'none';
+            }
+        });
+
+        // Admin Tabs
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab') + 'Tab';
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Form Submissions
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your donation! You will be redirected to the payment page.');
+            // In a real implementation, you would process the payment here
+        });
+
+        document.getElementById('programForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Program saved successfully!');
+            // In a real implementation, you would save to a database here
+        });
+
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Event saved successfully!');
+            // In a real implementation, you would save to a database here
+        });
+    </script>
+</body>
+</html>
